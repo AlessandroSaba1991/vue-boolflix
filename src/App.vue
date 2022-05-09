@@ -25,6 +25,18 @@
           <p>{{ film.vote_average }}</p>
         </li>
       </ul>
+      <ul>
+        <li v-for="(serie, index) in series" :key="serie.id">
+          <h3>{{ serie.name }}</h3>
+          <p>{{ serie.original_name }}</p>
+          <img
+            :src="'https://flagcdn.com/32x24/' + flags(index) + '.png'"
+            alt=""
+          />
+
+          <p>{{ serie.vote_average }}</p>
+        </li>
+      </ul>
     </main>
   </div>
 </template>
@@ -38,21 +50,25 @@ export default {
     return {
       searchText: "",
       films: null,
+      series:null
     };
   },
   methods: {
     searchFilm() {
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/movie?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=1&include_adult=false`
-        )
-        .then((response) => {
-          this.films = response.data.results;
-        });
+      const requestLinkFilms = axios.get(`https://api.themoviedb.org/3/search/movie?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=1&include_adult=false`)
+      const requestLinkSeries = axios.get(`https://api.themoviedb.org/3/search/tv?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=1&include_adult=false`)
+      axios.all([requestLinkFilms, requestLinkSeries]).then(
+        axios.spread((...responses) => {
+          this.films = responses[0].data.results;
+          this.series = responses[1].data.results
+          this.searchText = "";
+          
+        })
+      );
     },
     flags(index) {
       if (this.films[index].original_language === "en") {
-        this.films[index].original_language = "gb";
+        this.films[index].original_language = "gb"
       } else if (this.films[index].original_language === "ja") {
         this.films[index].original_language = "jp";
       } else if (this.films[index].original_language === "el") {
