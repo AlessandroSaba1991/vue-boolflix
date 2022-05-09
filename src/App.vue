@@ -26,21 +26,20 @@
             alt=""
           />
 
-          <p style="color:gold">
-            <font-awesome-icon 
-              v-for="n in starSystemSolid(index)"
+          <p style="color: gold">
+            <font-awesome-icon
+              v-for="n in starSystem(index)"
               :key="n"
               icon="fa-solid fa-star"
             />
-            <font-awesome-icon 
-              v-for="number in starSystemRegular(index)"
+            <font-awesome-icon
+              v-for="number in maxStars - starSystem(index)"
               :key="'r' + number"
               icon="fa-regular fa-star"
             />
           </p>
         </li>
       </ul>
-      
     </main>
   </div>
 </template>
@@ -54,8 +53,7 @@ export default {
     return {
       searchText: "",
       films: null,
-      starSolid: 0,
-      starRegular: 0,
+      maxStars: 5,
     };
   },
   methods: {
@@ -68,7 +66,10 @@ export default {
       );
       axios.all([requestLinkFilms, requestLinkSeries]).then(
         axios.spread((...responses) => {
-          this.films = [...responses[0].data.results,...responses[1].data.results];
+          this.films = [
+            ...responses[0].data.results,
+            ...responses[1].data.results,
+          ];
           this.searchText = "";
         })
       );
@@ -83,28 +84,16 @@ export default {
       }
       return this.films[index].original_language;
     },
-    
-    starSystemSolid(index) {
-      const numberStar = parseInt(this.films[index].vote_average / 2).toFixed(0);
-      const max = 5;
-     let starSolid = 0     
-      for (let i = 0; i < max; i++) {
-        if (parseInt(numberStar) >= i) {          
+
+    starSystem(index) {
+      const numberStar = Math.ceil(this.films[index].vote_average / 2);
+      let starSolid = 0;
+      for (let i = 0; i < this.maxStars; i++) {
+        if (parseInt(numberStar) > i) {
           starSolid += 1;
-        } 
+        }
       }
-      return starSolid
-    },
-    starSystemRegular(index) {
-      const numberStar = parseInt(this.films[index].vote_average / 2).toFixed(0);
-      const max = 5;
-     let starRegular = 0     
-      for (let i = 0; i < max; i++) {
-        if (parseInt(numberStar) < i) {          
-          starRegular += 1;
-        } 
-      }
-      return starRegular
+      return starSolid;
     },
   },
   components: {},
