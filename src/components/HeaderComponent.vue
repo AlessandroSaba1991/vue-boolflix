@@ -1,7 +1,11 @@
 <template>
   <header>
     <Logo />
-    <Form v-model="searchText" @searchFilm="searchFilm" :searchText="searchText" />
+    <Form
+      v-model="searchText"
+      @searchFilm="searchFilm"
+      :searchText="searchText"
+    />
   </header>
 </template>
 
@@ -38,8 +42,35 @@ export default {
           ];
           this.searchText = "";
           state.films = array;
+          this.castList(state.films);
+          
         })
       );
+    },
+    castList(array) {
+      array.forEach((film) => {
+        if (film.title) {
+          axios
+            .get(
+              `https://api.themoviedb.org/3/movie/${film.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it_IT`
+            )
+            .then((response) => {
+              const full_cast = response.data.cast;
+              const cast_5 = full_cast.filter((person) => person.order < 5);
+              state.cast.push(cast_5);
+            });
+        } else {
+          axios
+            .get(
+              `https://api.themoviedb.org/3/tv/${film.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
+            )
+            .then((response) => {
+              const full_cast = response.data.cast;
+              const cast_5 = full_cast.filter((person) => person.order < 5);
+              state.cast.push(cast_5);
+            });
+        }
+      });
     },
   },
 };
