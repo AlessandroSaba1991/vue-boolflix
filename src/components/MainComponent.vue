@@ -2,27 +2,31 @@
   <main>
     <div class="container-fluid">
       <div class="row justify-content-center g-1">
-        <CardFilm :film="film" :index="index" v-for="(film,index) in films" :key="film.id" />
+        <CardFilm
+          :film="film"
+          :index="index"
+          v-for="(film, index) in films"
+          :key="film.id"
+        />
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import CardFilm from './CardFilmComponent.vue'
+import CardFilm from "./CardFilmComponent.vue";
 import state from "@/state";
 
 export default {
   name: "MainComponent",
-  components:{
-      CardFilm
-  }, 
+  components: {
+    CardFilm,
+  },
   computed: {
     films() {
       return state.films;
     },
   },
-  
 };
 </script>
 

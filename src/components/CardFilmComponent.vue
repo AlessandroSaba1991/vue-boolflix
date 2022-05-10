@@ -4,18 +4,33 @@
       <div class="img">
         <img :src="placeholderImage(film.poster_path)" :alt="film.title" />
       </div>
+      <!-- /.img -->
       <div class="description_film">
-        <p><strong>Titolo: </strong> {{ film.title || film.name }}</p>
+        <!-- TITOLO -->
         <p>
-          <strong>Titolo originale: </strong
-          >{{ film.original_title || film.original_name }}
+          <strong>Titolo: </strong>
+          {{ film.title || film.name }}
         </p>
-        <p><strong>Genere: </strong><br> <span v-for="(genre,i) in genres[index]" :key="genre.id">{{i}}: {{genre.name}}. <br></span></p>
+        <!-- TITOLO ORIGINALE -->
+        <p>
+          <strong>Titolo originale: </strong>
+          {{ film.original_title || film.original_name }}
+        </p>
+        <!-- GENERE -->
+        <p>
+          <strong>Genere: </strong>
+          <br />
+          <span v-for="(genre, i) in genres[index]" :key="genre.id">
+            {{ i }}: {{ genre.name }}.
+            <br />
+          </span>
+        </p>
+        <!-- BANDIERA -->
         <img
           :src="'https://flagcdn.com/32x24/' + flagsFilm(film) + '.png'"
           alt=""
         />
-
+        <!-- STELLINE -->
         <p style="color: gold">
           <strong class="text-white">Voto: </strong>
           <font-awesome-icon
@@ -29,24 +44,33 @@
             icon="fa-regular fa-star"
           />
         </p>
+        <!-- CAST -->
         <p>
           <strong>Cast : </strong>
-          <span v-for="person in cast[index]" :key="person.id"> "{{person.name}}"</span>.
+          <span v-for="person in cast[index]" :key="person.id">
+            "{{ person.name }}" 
+          </span>.
         </p>
-        <p><strong>Overview: </strong>{{ film.overview }}</p>
+        <!-- oVERVIEW -->
+        <p>
+            <strong>Overview: </strong>
+            {{ film.overview }}
+        </p>
       </div>
+      <!-- /.description_film -->      
     </div>
+    <!-- /.card_film -->
   </div>
 </template>
 
 <script>
-import state from '@/state'
+import state from "@/state";
 
 export default {
   name: "CardFilmComponent",
   props: {
     film: Object,
-    index: Number
+    index: Number,
   },
   data() {
     return {
@@ -55,12 +79,12 @@ export default {
     };
   },
   computed: {
-      cast(){
-          return state.cast
-      },
-      genres(){
-          return state.genres
-      }
+    cast() {
+      return state.cast;
+    },
+    genres() {
+      return state.genres;
+    },
   },
   methods: {
     flagsFilm(object) {

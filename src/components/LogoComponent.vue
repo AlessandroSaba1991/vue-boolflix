@@ -1,15 +1,14 @@
 <template>
   <div class="logo">
-        <img src="@/assets/img/boolflix.png" alt="logo boolflix" />
-      </div>
+    <img src="@/assets/img/boolflix.png" alt="logo boolflix" />
+  </div>
 </template>
 
 <script>
 export default {
-    name:'LogoComponent'
-}
+  name: "LogoComponent",
+};
 </script>
 
 <style>
-
 </style>
