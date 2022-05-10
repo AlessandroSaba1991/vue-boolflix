@@ -10,6 +10,7 @@
           <strong>Titolo originale: </strong
           >{{ film.original_title || film.original_name }}
         </p>
+        <p><strong>Genere: </strong><br> <span v-for="(genre,i) in genres[index]" :key="genre.id">{{i}}: {{genre.name}}. <br></span></p>
         <img
           :src="'https://flagcdn.com/32x24/' + flagsFilm(film) + '.png'"
           alt=""
@@ -30,7 +31,7 @@
         </p>
         <p>
           <strong>Cast : </strong>
-          <span v-for="person in cast[index]" :key="person.id"> {{person.name}} </span>
+          <span v-for="person in cast[index]" :key="person.id"> "{{person.name}}"</span>.
         </p>
         <p><strong>Overview: </strong>{{ film.overview }}</p>
       </div>
@@ -56,6 +57,9 @@ export default {
   computed: {
       cast(){
           return state.cast
+      },
+      genres(){
+          return state.genres
       }
   },
   methods: {

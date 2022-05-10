@@ -34,41 +34,48 @@ export default {
       const requestLinkSeries = axios.get(
         `https://api.themoviedb.org/3/search/tv?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=1&include_adult=false`
       );
-      axios.all([requestLinkFilms, requestLinkSeries]).then(
-        axios.spread((...responses) => {
-          const array = [
-            ...responses[0].data.results,
-            ...responses[1].data.results,
-          ];
-          this.searchText = "";
-          state.films = array;
-          this.castList(state.films);
-          
-        })
-      );
+      Promise.all([requestLinkFilms, requestLinkSeries]).then((responses) => {
+        const array = [
+          ...responses[0].data.results,
+          ...responses[1].data.results,
+        ];
+        this.searchText = "";
+        state.films = array;
+        this.castList(state.films);
+      });
     },
     castList(array) {
       array.forEach((film) => {
         if (film.title) {
-          axios
-            .get(
-              `https://api.themoviedb.org/3/movie/${film.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it_IT`
-            )
-            .then((response) => {
-              const full_cast = response.data.cast;
-              const cast_5 = full_cast.filter((person) => person.order < 5);
-              state.cast.push(cast_5);
-            });
+          const linkCastFilm = axios.get(
+            `https://api.themoviedb.org/3/movie/${film.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it_IT`
+          );
+          const linkGenereFilm = axios.get(
+            `https://api.themoviedb.org/3/movie/${film.id}?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
+          );
+          Promise.all([linkCastFilm, linkGenereFilm]).then((responses) => {
+            console.log(responses);
+            const full_cast = responses[0].data.cast;
+            const cast_5 = full_cast.filter((person) => person.order < 5);
+            state.cast.push(cast_5);
+            const full_film = responses[1].data;
+            state.genres.push(full_film.genres);
+          });
         } else {
-          axios
-            .get(
-              `https://api.themoviedb.org/3/tv/${film.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
-            )
-            .then((response) => {
-              const full_cast = response.data.cast;
-              const cast_5 = full_cast.filter((person) => person.order < 5);
-              state.cast.push(cast_5);
-            });
+          const linkCastTV = axios.get(
+            `https://api.themoviedb.org/3/tv/${film.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
+          );
+          const linkGenereTV = axios.get(
+            `https://api.themoviedb.org/3/tv/${film.id}?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
+          );
+          Promise.all([linkCastTV, linkGenereTV]).then((responses) => {
+            console.log(responses);
+            const full_cast = responses[0].data.cast;
+            const cast_5 = full_cast.filter((person) => person.order < 5);
+            state.cast.push(cast_5);
+            const full_film = responses[1].data;
+            state.genres.push(full_film.genres);
+          });
         }
       });
     },
