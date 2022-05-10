@@ -28,6 +28,10 @@
             icon="fa-regular fa-star"
           />
         </p>
+        <p>
+          <strong>Cast : </strong>
+          <span v-for="person in cast[index]" :key="person.id"> {{person.name}} </span>
+        </p>
         <p><strong>Overview: </strong>{{ film.overview }}</p>
       </div>
     </div>
@@ -35,16 +39,24 @@
 </template>
 
 <script>
+import state from '@/state'
+
 export default {
   name: "CardFilmComponent",
   props: {
     film: Object,
+    index: Number
   },
   data() {
     return {
       maxStars: 5,
       imgPlaceholder: "https://cringemdb.com/img/movie-poster-placeholder.png",
     };
+  },
+  computed: {
+      cast(){
+          return state.cast
+      }
   },
   methods: {
     flagsFilm(object) {
@@ -57,11 +69,11 @@ export default {
       }
       return object.original_language;
     },
-    placeholderImage(object) {
-      if (object === null) {
+    placeholderImage(item) {
+      if (item === null) {
         return this.imgPlaceholder;
       } else {
-        return "https://image.tmdb.org/t/p/w342" + object;
+        return "https://image.tmdb.org/t/p/w342" + item;
       }
     },
     starSystem(object) {

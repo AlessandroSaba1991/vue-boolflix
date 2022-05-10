@@ -2,7 +2,7 @@
   <main>
     <div class="container-fluid">
       <div class="row justify-content-center g-1">
-        <CardFilm :film="film" v-for="film in films" :key="film.id" />
+        <CardFilm :film="film" :index="index" v-for="(film,index) in films" :key="film.id" />
       </div>
     </div>
   </main>

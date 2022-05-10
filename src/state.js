@@ -1,7 +1,9 @@
 import Vue from 'vue'
 
 const state = Vue.observable({
-    films:[]    
+    films:[],
+    cast:[],
+    boolean:false    
 })
 
 export default state
