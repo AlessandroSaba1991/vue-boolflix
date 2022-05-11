@@ -1,23 +1,198 @@
 <template>
   <div id="app">
-    <Header />
-    <Main />
+    <header>
+      <Logo />
+      <div class="filter">
+        <Form
+          v-model.trim="searchText"
+          @searchFilm="newSearchFilm"
+          :searchText="searchText"
+        />
+        <Select
+          :ableSelect="ableSelect"
+          :typeGenreFilms="typeGenreFilms"
+          v-model="typeGenreFilms"
+          @selectGenreFilms="CastAndGenereList(films, series)"
+        />
+      </div>
+    </header>
+    <main v-if="loading">
+      <ContainerFilm
+        :numberPageFilm="numberPageFilm"
+        v-model="numberPageFilm"
+        @selectnumberPageFilm="selectPageFilm"
+      />
+      <ContainerSerie
+        :numberPageSerie="numberPageSerie"
+        v-model="numberPageSerie"
+        @selectnumberPageSerie="selectPageSerie"
+      />
+    </main>
   </div>
 </template>
 
 <script>
-import Header from "./components/HeaderComponent.vue";
-import Main from "./components/MainComponent.vue";
+import Logo from "./components/LogoComponent.vue";
+import Form from "./components/FormComponent.vue";
+import Select from "./components/SelectComponent.vue";
+import ContainerFilm from "./components/ContainerFilmComponent.vue";
+import ContainerSerie from "./components/ContainerSerieComponent.vue";
+import axios from "axios";
+import state from "@/state";
 
 export default {
   name: "App",
   components: {
-    Header,
-    Main,
+    Logo,
+    Form,
+    Select,
+    ContainerFilm,
+    ContainerSerie,
+  },
+  data() {
+    return {
+      searchText: "",
+      typeGenreFilms: "0",
+      films_data: [],
+      films: null,
+      series: null,
+      ableSelect: true,
+      numberPageFilm: "1",
+      numberPageSerie: "1",
+      loading:false
+    };
+  },
+  methods: {
+    newSearchFilm() {
+      this.numberPageFilm = "1";
+      this.numberPageSerie = "1";
+      this.searchFilm();
+    },
+    selectPageFilm() {
+      this.searchText = state.lastCall;
+      this.searchFilm();
+    },
+    selectPageSerie() {
+      this.searchText = state.lastCall;
+      this.searchFilm();
+    },
+    searchFilm() {
+      state.boolean=true
+      this.ableSelect = false;
+      /* CHIAMATA FILM */
+      const requestLinkFilms = axios.get(
+        `https://api.themoviedb.org/3/search/movie?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=${this.numberPageFilm}`
+      );
+      /* CHIAMATA SERIE */
+      const requestLinkSeries = axios.get(
+        `https://api.themoviedb.org/3/search/tv?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=${this.numberPageSerie}`
+      );
+      Promise.all([requestLinkFilms, requestLinkSeries]).then((responses) => {
+        this.films_data = { film: responses[0].data, tv: responses[1].data };
+        state.lastCall = this.searchText;
+        this.searchText = "";
+        this.films = this.films_data.film.results;
+        this.series = this.films_data.tv.results;
+        state.films_data = this.films_data;
+        state.films = this.films;
+        state.series = this.series;
+        this.loading=true
+        /* PRONTA L'ARRAY FILM LA UTLIZZO PER FARE LE CHIAMATE PER I GENERI E IL CAST*/
+        this.CastAndGenereList(state.films, state.series);
+      });
+    },
+    CastAndGenereList(array, array2) {
+      this.castGenresFilm(array);
+      this.castGenresSeries(array2);
+    },
+    /* SALVATE NELLO STATE */
+    castGenresFilm(array) {
+      state.selectGenreFilms = parseInt(this.typeGenreFilms);
+      if (state.selectGenreFilms !== 0) {
+        array = array.filter((object) =>
+          object.genre_ids.includes(state.selectGenreFilms)
+        );
+      }
+      state.films = array;
+      state.castFilms = [];
+      state.genresFilms = [];
+      array.forEach((object) => {
+        /* CHIAMATE CAST E GENERE PER FILM */
+        const linkCast = axios.get(
+          `https://api.themoviedb.org/3/movie/${object.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it_IT`
+        );
+        const linkGenere = axios.get(
+          `https://api.themoviedb.org/3/movie/${object.id}?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
+        );
+        Promise.all([linkCast, linkGenere]).then((responses) => {
+          this.createCastAndGenreList(
+            responses,
+            state.castFilms,
+            state.genresFilms
+          );
+        });
+      });
+    },
+    castGenresSeries(array) {
+      state.selectGenreFilms = parseInt(this.typeGenreFilms);
+      if (state.selectGenreFilms !== 0) {
+        array = array.filter((object) =>
+          object.genre_ids.includes(state.selectGenreFilms)
+        );
+      }
+      state.series = array;
+      state.castSeries = [];
+      state.genresSeries = [];
+      array.forEach((object) => {
+        /* CHIAMATE CAST E GENERE PER FILM */
+        const linkCast = axios.get(
+          `https://api.themoviedb.org/3/tv/${object.id}/credits?api_key=e99307154c6dfb0b4750f6603256716d&language=it_IT`
+        );
+        const linkGenere = axios.get(
+          `https://api.themoviedb.org/3/tv/${object.id}?api_key=e99307154c6dfb0b4750f6603256716d&language=it-IT`
+        );
+        Promise.all([linkCast, linkGenere]).then((responses) => {
+          this.createCastAndGenreList(
+            responses,
+            state.castSeries,
+            state.genresSeries
+          );
+        });
+      });
+    },
+    createCastAndGenreList(responses, cast, genre) {
+      const full_cast = responses[0].data.cast;
+      const cast_5 = full_cast.filter((person) => person.order < 5);
+      cast.push(cast_5);
+      genre.push(responses[1].data.genres);
+    },
   },
 };
 </script>
 
 <style lang="scss">
 @import "@/assets/scss/style";
+#app{
+  background-color: gray;
+  height: 100vh;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(26, 24, 24);
+  padding: 1rem;
+  .filter {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    row-gap: 0.5rem;
+  }
+}
+main {
+  height: calc(100vh - 118px);
+  padding: 3rem 1rem;
+  background-color: gray;
+  overflow-x: auto;
+}
 </style>

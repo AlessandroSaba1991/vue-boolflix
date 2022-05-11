@@ -1,20 +1,20 @@
 <template>
   <div class="col_">
-    <div class="card_film">
+    <div class="card_serie">
       <div class="img">
-        <img :src="placeholderImage(film.poster_path)" :alt="film.title" />
+        <img :src="placeholderImage(serie.poster_path)" :alt="serie.name" />
       </div>
       <!-- /.img -->
-      <div class="description_film">
+      <div class="description_serie">
         <!-- TITOLO -->
         <p>
           <strong>Titolo: </strong>
-          {{ film.title }}
+          {{ serie.name }}
         </p>
         <!-- TITOLO ORIGINALE -->
         <p>
           <strong>Titolo originale: </strong>
-          {{ film.original_title }}
+          {{ serie.original_name }}
         </p>
         <!-- GENERE -->
         <p>
@@ -29,7 +29,7 @@
         <p class="d-flex align-items-center">
           <strong class="me-2">Lingua: </strong>
           <img
-            :src="'https://flagcdn.com/32x24/' + flagsFilm(film) + '.png'"
+            :src="'https://flagcdn.com/32x24/' + flagsFilm(serie) + '.png'"
             alt=""
           />
         </p>
@@ -37,12 +37,12 @@
         <p style="color: gold">
           <strong class="text-white">Voto: </strong>
           <font-awesome-icon
-            v-for="n in starSystem(film)"
+            v-for="n in starSystem(serie)"
             :key="n"
             icon="fa-solid fa-star"
           />
           <font-awesome-icon
-            v-for="number in maxStars - starSystem(film)"
+            v-for="number in maxStars - starSystem(serie)"
             :key="'r' + number"
             icon="fa-regular fa-star"
           />
@@ -57,7 +57,7 @@
         <!-- OVERVIEW -->
         <p>
           <strong>Overview: </strong>
-          {{ film.overview }}
+          {{ serie.overview }}
         </p>
       </div>
       <!-- /.description_film -->
@@ -67,12 +67,12 @@
 </template>
 
 <script>
-import state from "@/state";
+import state from '@/state'
 
 export default {
-  name: "CardFilmComponent",
-  props: {
-    film: Object,
+    name:'CardSeriesComponent',
+props: {
+    serie: Object,
     index: Number,
   },
   data() {
@@ -83,10 +83,10 @@ export default {
   },
   computed: {
     cast() {
-      return state.castFilms;
+      return state.castSeries;
     },
     genres() {
-      return state.genresFilms;
+      return state.genresSeries;
     },
   },
   methods: {
@@ -110,15 +110,12 @@ export default {
         case "hi":
           object.original_language = "in";
           break;
-        case "kv":
+          case "kv":
           object.original_language = "ru";
           break;
-        case "cs":
+           case "cs":
           object.original_language = "cz";
-          break;
-        case "da":
-          object.original_language = "dk";
-          break;
+          break;            
       }
       return object.original_language;
     },
@@ -139,7 +136,7 @@ export default {
 <style lang="scss" scoped>
 .col_ {
   width: fit-content;
-  .card_film {
+  .card_serie {
     overflow-y: auto;
     width: 342px;
     height: 513px;
@@ -153,7 +150,7 @@ export default {
         width: 100%;
       }
     }
-    .description_film {
+    .description_serie {
       padding: 2rem 0.5rem;
       display: none;
       p,
@@ -164,10 +161,10 @@ export default {
     }
   }
 }
-.card_film:hover .img {
+.card_serie:hover .img {
   display: none;
 }
-.card_film:hover .description_film {
+.card_serie:hover .description_serie {
   display: block;
 }
 </style>

@@ -5,9 +5,9 @@
     name="genre"
     id="genre"
     :disabled="ableSelect"
-    :value="typeGenre"
+    :value="typeGenreFilms"
     @input="$emit('input', $event.target.value)"
-    @change="$emit('selectGenre')"
+    @change="$emit('selectGenreFilms')"
   >
   
     <option value="0" selected>All</option>
@@ -25,7 +25,7 @@ import axios from "axios";
 export default {
   name: "SelectComponent",
   props:{
-      typeGenre:String ,
+      typeGenreFilms:String ,
       ableSelect:Boolean,
       
   },
