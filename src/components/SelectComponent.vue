@@ -7,7 +7,7 @@
     @input="$emit('input', $event.target.value)"
     @change="$emit('selectGenre')"
   >
-  <option disabled>Select Genere</option>
+  
     <option value="0" selected>All</option>
     <option :value="genre.id" v-for="genre in genreList" :key="genre.id">
       {{ genre.name }}
@@ -21,8 +21,9 @@ import axios from "axios";
 export default {
   name: "SelectComponent",
   props:{
-      typeGenre:String,
-      ableSelect:Boolean
+      typeGenre:String ,
+      ableSelect:Boolean,
+      
   },
   data() {
     return {

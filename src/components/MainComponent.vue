@@ -24,11 +24,7 @@ export default {
   },
   computed: {
     films() {
-      if (state.selectGenre !== 0) {
-        return state.films.filter((film) => film.genre_ids.includes(state.selectGenre));
-      } else {
-        return state.films;
-      }
+      return state.films;
     },
   },
 };

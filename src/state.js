@@ -4,7 +4,7 @@ const state = Vue.observable({
     films:[],
     cast:[],
     genres:[],
-    selectGenre:0,
+    selectGenre:"0",
     boolean:false ,
     
 })

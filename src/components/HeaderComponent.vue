@@ -2,11 +2,11 @@
   <header>
     <Logo />
     <Form
-      v-model="searchText"
+      v-model.trim="searchText"
       @searchFilm="searchFilm"
       :searchText="searchText"
     />
-    <Select :ableSelect="ableSelect" v-model="typeGenre" @selectGenre="CastAndGenereList(films)" />
+    <Select :ableSelect="ableSelect" :typeGenre="typeGenre" v-model="typeGenre" @selectGenre="CastAndGenereList(films)" />
   </header>
 </template>
 
@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       searchText: "",
-      typeGenre: 0,
+      typeGenre: "0",
       films: null,
       ableSelect:true
     };
@@ -61,6 +61,7 @@ export default {
           film.genre_ids.includes(state.selectGenre)
         );
       } 
+      state.films = array
       state.cast = [];
       state.genres = [];
       array.forEach((film) => {

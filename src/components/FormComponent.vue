@@ -5,9 +5,10 @@
       type="text"
       name="search"
       id="search"
+      pattern="\s*(\S\s*){1,}"
       :value="searchText"
       @input="$emit('input', $event.target.value)"
-    />
+      required/>
     <button type="submit">Cerca</button>
   </form>
 </template>
