@@ -24,7 +24,11 @@ export default {
   },
   computed: {
     films() {
-      return state.films;
+      if (state.selectGenre !== 0) {
+        return state.films.filter((film) => film.genre_ids.includes(state.selectGenre));
+      } else {
+        return state.films;
+      }
     },
   },
 };
@@ -32,6 +36,7 @@ export default {
 
 <style lang="scss" scoped>
 main {
+  min-height: calc(100vh - 118px);
   background-color: gray;
   padding: 3rem 1rem;
 }

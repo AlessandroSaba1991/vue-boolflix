@@ -21,15 +21,18 @@
           <strong>Genere: </strong>
           <br />
           <span v-for="(genre, i) in genres[index]" :key="genre.id">
-            {{ i }}: {{ genre.name }}.
+            {{ i + 1 }}: {{ genre.name }}.
             <br />
           </span>
         </p>
         <!-- BANDIERA -->
-        <img
-          :src="'https://flagcdn.com/32x24/' + flagsFilm(film) + '.png'"
-          alt=""
-        />
+        <p class="d-flex align-items-center">
+          <strong class="me-2">Lingua: </strong>
+          <img
+            :src="'https://flagcdn.com/32x24/' + flagsFilm(film) + '.png'"
+            alt=""
+          />
+        </p>
         <!-- STELLINE -->
         <p style="color: gold">
           <strong class="text-white">Voto: </strong>
@@ -48,16 +51,16 @@
         <p>
           <strong>Cast : </strong>
           <span v-for="person in cast[index]" :key="person.id">
-            "{{ person.name }}" 
-          </span>.
+            "{{ person.name }}" </span
+          >.
         </p>
-        <!-- oVERVIEW -->
+        <!-- OVERVIEW -->
         <p>
-            <strong>Overview: </strong>
-            {{ film.overview }}
+          <strong>Overview: </strong>
+          {{ film.overview }}
         </p>
       </div>
-      <!-- /.description_film -->      
+      <!-- /.description_film -->
     </div>
     <!-- /.card_film -->
   </div>
@@ -88,12 +91,31 @@ export default {
   },
   methods: {
     flagsFilm(object) {
-      if (object.original_language === "en") {
-        object.original_language = "gb";
-      } else if (object.original_language === "ja") {
-        object.original_language = "jp";
-      } else if (object.original_language === "el") {
-        object.original_language = "gr";
+      switch (object.original_language) {
+        case "en":
+          object.original_language = "gb";
+          break;
+        case "ja":
+          object.original_language = "jp";
+          break;
+        case "el":
+          object.original_language = "gr";
+          break;
+        case "ko":
+          object.original_language = "kp";
+          break;
+        case "zh":
+          object.original_language = "cn";
+          break;
+        case "hi":
+          object.original_language = "in";
+          break;
+          case "kv":
+          object.original_language = "ru";
+          break;
+           case "cs":
+          object.original_language = "cz";
+          break;            
       }
       return object.original_language;
     },
@@ -129,7 +151,7 @@ export default {
       }
     }
     .description_film {
-      padding: 2rem 0.25rem;
+      padding: 2rem 0.5rem;
       display: none;
       p,
       img {

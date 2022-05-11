@@ -4,7 +4,9 @@ const state = Vue.observable({
     films:[],
     cast:[],
     genres:[],
-    boolean:false    
+    selectGenre:0,
+    boolean:false ,
+    
 })
 
 export default state
