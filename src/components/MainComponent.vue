@@ -1,6 +1,9 @@
 <template>
   <main>
     <div class="container-fluid">
+      <select name="pages" id="pages">
+        <option :value="n" v-for="n in films_data.total_pages" :key="n" >{{n}}</option>
+      </select>
       <div class="row justify-content-center g-1">
         <CardFilm
           :film="film"
@@ -26,6 +29,9 @@ export default {
     films() {
       return state.films;
     },
+    films_data(){
+      return state.films_data.tv
+    }
   },
 };
 </script>

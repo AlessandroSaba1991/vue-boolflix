@@ -1,12 +1,20 @@
 <template>
   <header>
     <Logo />
+    <div class="filter">
     <Form
       v-model.trim="searchText"
       @searchFilm="searchFilm"
       :searchText="searchText"
     />
-    <Select :ableSelect="ableSelect" :typeGenre="typeGenre" v-model="typeGenre" @selectGenre="CastAndGenereList(films)" />
+    <Select
+      :ableSelect="ableSelect"
+      :typeGenre="typeGenre"
+      v-model="typeGenre"
+      @selectGenre="CastAndGenereList(films)"
+    />
+
+    </div>
   </header>
 </template>
 
@@ -28,27 +36,28 @@ export default {
     return {
       searchText: "",
       typeGenre: "0",
-      films: null,
-      ableSelect:true
+      films_data:null,
+      films:null,
+      ableSelect: true,
     };
   },
   methods: {
     searchFilm() {
-      this.ableSelect = false
+      this.ableSelect = false;
       /* CHIAMATA FILM */
       const requestLinkFilms = axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=1&include_adult=false`
+        `https://api.themoviedb.org/3/search/movie?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}`
       );
       /* CHIAMATA SERIE */
       const requestLinkSeries = axios.get(
-        `https://api.themoviedb.org/3/search/tv?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=1&include_adult=false`
+        `https://api.themoviedb.org/3/search/tv?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}`
       );
       Promise.all([requestLinkFilms, requestLinkSeries]).then((responses) => {
-        this.films = [
-          ...responses[0].data.results,
-          ...responses[1].data.results,
-        ];
+        this.films_data =  {film:responses[0].data, tv:responses[1].data}
+        
         this.searchText = "";
+        this.films = [...this.films_data.film.results,...this.films_data.tv.results]
+        state.films_data = this.films_data        
         state.films = this.films;
         /* PRONTA L'ARRAY FILM LA UTLIZZO PER FARE LE CHIAMATE PER I GENERI E IL CAST*/
         this.CastAndGenereList(state.films);
@@ -57,11 +66,11 @@ export default {
     CastAndGenereList(array) {
       state.selectGenre = parseInt(this.typeGenre);
       if (state.selectGenre !== 0) {
-         array = array.filter((film) =>
+        array = array.filter((film) =>
           film.genre_ids.includes(state.selectGenre)
         );
-      } 
-      state.films = array
+      }
+      state.films = array;
       state.cast = [];
       state.genres = [];
       array.forEach((film) => {
@@ -109,5 +118,11 @@ header {
   align-items: center;
   background-color: rgb(26, 24, 24);
   padding: 1rem;
+  .filter{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    row-gap: 0.5rem;
+  }
 }
 </style>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 
 const state = Vue.observable({
+    films_data:[],
     films:[],
     cast:[],
     genres:[],

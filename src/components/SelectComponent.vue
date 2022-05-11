@@ -1,4 +1,6 @@
 <template>
+<div class="select">
+<label for="genre" class="text-white">Seleziona un genere: </label>
   <select
     name="genre"
     id="genre"
@@ -13,6 +15,8 @@
       {{ genre.name }}
     </option>
   </select>
+
+</div>
 </template>
 
 <script>
