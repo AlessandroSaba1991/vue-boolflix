@@ -4,7 +4,6 @@
     <select
       name="genre"
       id="genre"
-      :disabled="ableSelect"
       :value="typeGenreFilms"
       @input="$emit('input', $event.target.value)"
       @change="$emit('selectGenreFilms')">

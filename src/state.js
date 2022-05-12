@@ -10,7 +10,6 @@ const state = Vue.observable({
     genresSeries:[],
     selectGenreFilms:"0",
     selectGenreSeries:"0",
-    boolean:false ,
     lastCall:''
     
 })

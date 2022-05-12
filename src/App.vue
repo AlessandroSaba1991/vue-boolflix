@@ -65,22 +65,7 @@ export default {
     };
   },
   methods: {
-    newSearchFilm() {
-      this.numberPageFilm = "1";
-      this.numberPageSerie = "1";
-      this.searchFilm();
-    },
-    selectPageFilm() {
-      this.searchText = state.lastCall;
-      this.searchFilm();
-    },
-    selectPageSerie() {
-      this.searchText = state.lastCall;
-      this.searchFilm();
-    },
     searchFilm() {
-      state.boolean = true;
-      this.ableSelect = false;
       /* CHIAMATA FILM */
       const requestLinkFilms = axios.get(
         `https://api.themoviedb.org/3/search/movie?api_key=f3afd7059da19eddb0348a3bc5186e80&language=it-IT&query=${this.searchText}&page=${this.numberPageFilm}`
@@ -167,6 +152,19 @@ export default {
       const cast_5 = full_cast.filter((person) => person.order < 5);
       cast.push(cast_5);
       genre.push(responses[1].data.genres);
+    },
+    newSearchFilm() {
+      this.numberPageFilm = "1";
+      this.numberPageSerie = "1";
+      this.searchFilm();
+    },
+    selectPageFilm() {
+      this.searchText = state.lastCall;
+      this.searchFilm();
+    },
+    selectPageSerie() {
+      this.searchText = state.lastCall;
+      this.searchFilm();
     },
   },
 };
