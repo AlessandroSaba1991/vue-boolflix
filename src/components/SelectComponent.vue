@@ -7,8 +7,7 @@
       :disabled="ableSelect"
       :value="typeGenreFilms"
       @input="$emit('input', $event.target.value)"
-      @change="$emit('selectGenreFilms')"
-    >
+      @change="$emit('selectGenreFilms')">
       <option value="0" selected>All</option>
       <option :value="genre.id" v-for="genre in genreList" :key="genre.id">
         {{ genre.name }}
@@ -58,9 +57,9 @@ export default {
 
 <style lang="scss" scoped>
 .select {
-  position: absolute;
-  right: 1rem;
-  top: 0.25rem;
+  position: fixed;
+  right: 2rem;
+  top: 6.25rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -75,7 +74,7 @@ export default {
     border-radius: 50rem;
     padding-left: 0.25rem;
     font-weight: 600;
-    option{
+    option {
       font-weight: 600;
     }
   }

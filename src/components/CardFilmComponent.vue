@@ -7,35 +7,34 @@
       <!-- /.img -->
       <div class="description_film">
         <!-- TITOLO -->
+        <h5>Titolo</h5>
         <p>
-          <strong>Titolo: </strong>
           {{ film.title }}
         </p>
         <!-- TITOLO ORIGINALE -->
+        <h5>Titolo originale</h5>
         <p>
-          <strong>Titolo originale: </strong>
           {{ film.original_title }}
         </p>
         <!-- GENERE -->
+        <h5>Genere</h5>
         <p>
-          <strong>Genere: </strong>
-          <br />
-          <span v-for="(genre, i) in genres[index]" :key="genre.id">
-            {{ i + 1 }}: {{ genre.name }}.
+          <span v-for="genre in genres[index]" :key="genre.id">
+            {{ genre.name }}
             <br />
           </span>
         </p>
         <!-- BANDIERA -->
-        <p class="d-flex align-items-center">
-          <strong class="me-2">Lingua: </strong>
+        <h5>Lingua</h5>
+        <p class="d-flex justify-content-center">
           <img
             :src="'https://flagcdn.com/32x24/' + flagsFilm(film) + '.png'"
             alt=""
           />
         </p>
         <!-- STELLINE -->
+        <h5>Voto</h5>
         <p style="color: gold">
-          <strong class="text-white">Voto: </strong>
           <font-awesome-icon
             v-for="n in starSystem(film)"
             :key="n"
@@ -48,15 +47,15 @@
           />
         </p>
         <!-- CAST -->
+        <h5>Cast</h5>
         <p>
-          <strong>Cast : </strong>
           <span v-for="person in cast[index]" :key="person.id">
-            "{{ person.name }}" </span
-          >.
+            "{{ person.name }}" 
+          </span>
         </p>
         <!-- OVERVIEW -->
+        <h5>Overview</h5>
         <p>
-          <strong>Overview: </strong>
           {{ film.overview }}
         </p>
       </div>
@@ -143,7 +142,9 @@ export default {
     overflow-y: auto;
     width: 342px;
     height: 513px;
-    border: 1px solid white;
+    text-align: center;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px red;
     background-color: black;
     color: white;
     .img {
@@ -156,7 +157,10 @@ export default {
     .description_film {
       padding: 2rem 0.5rem;
       display: none;
-      p,
+      h5 {
+        color: red;
+      }
+      h5,
       img {
         margin-top: 0.25rem;
         margin-bottom: 0;
@@ -169,5 +173,8 @@ export default {
 }
 .card_film:hover .description_film {
   display: block;
+}
+::-webkit-scrollbar-track {
+  background-color: black;
 }
 </style>

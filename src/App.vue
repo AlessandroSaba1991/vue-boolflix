@@ -27,6 +27,7 @@
         @selectnumberPageSerie="selectPageSerie"
       />
     </main>
+    <div v-else class="initial"><h2>😂Esegui una ricerca😂</h2></div>
   </div>
 </template>
 
@@ -194,17 +195,32 @@ main {
   background-color: gray;
   overflow-x: auto;
 }
+.initial {
+  width: fit-content;
+  padding: 0.25rem 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50rem;
+  background-color: black;
+  color: red;
+  box-shadow: 0 0 4px red;
+  h2 {
+    margin-bottom: 0;
+  }
+}
 ::-webkit-scrollbar {
   width: 8px;
   margin-right: 0.5rem;
 }
-::-webkit-scrollbar:horizontal{
+::-webkit-scrollbar:horizontal {
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
   background-color: gray;
-} /* colore di sfondo delle scrollbar */
+}
 
 ::-webkit-scrollbar-thumb {
   background-color: red;

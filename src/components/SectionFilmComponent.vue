@@ -8,8 +8,7 @@
           id="pages"
           :value="numberPageFilm"
           @input="$emit('input', $event.target.value)"
-          @change="$emit('selectnumberPageFilm')"
-        >
+          @change="$emit('selectnumberPageFilm')">
           <option :value="n" v-for="n in films_data.total_pages" :key="n">
             {{ n }}
           </option>
@@ -20,10 +19,9 @@
           :film="film"
           :index="index"
           v-for="(film, index) in films"
-          :key="film.id"
-        />
+          :key="film.id" />
       </div>
-      <div v-else class="no_response">Non abbiamo questo tipo di film</div>
+      <div v-else class="no_response"><h3>😰Nessun Risultato😰</h3></div>
     </div>
   </section>
 </template>
@@ -62,14 +60,14 @@ export default {
   background-color: black;
   color: red;
   box-shadow: 0 0 4px red;
-  select{
+  select {
     margin-top: 0.35rem;
     background-color: lightgray;
     color: red;
     border-radius: 50rem;
     padding-left: 0.25rem;
     font-weight: 600;
-    option{
+    option {
       font-weight: 600;
     }
   }
@@ -79,10 +77,18 @@ export default {
   overflow-y: auto;
 }
 .no_response {
-  color: white;
-  font-size: 80px;
+  width: fit-content;
+  padding: 0.25rem 1rem;
+  margin: 3rem auto;
+  border-radius: 50rem;
+  background-color: black;
+  color: red;
+  box-shadow: 0 0 4px red;
+  h3 {
+    margin-bottom: 0;
+  }
 }
 :focus-visible {
-    outline: none;
+  outline: none;
 }
 </style>
