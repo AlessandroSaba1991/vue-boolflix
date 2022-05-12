@@ -1,22 +1,20 @@
 <template>
-<div class="select">
-<label for="genre" class="text-white">Seleziona un genere: </label>
-  <select
-    name="genre"
-    id="genre"
-    :disabled="ableSelect"
-    :value="typeGenreFilms"
-    @input="$emit('input', $event.target.value)"
-    @change="$emit('selectGenreFilms')"
-  >
-  
-    <option value="0" selected>All</option>
-    <option :value="genre.id" v-for="genre in genreList" :key="genre.id">
-      {{ genre.name }}
-    </option>
-  </select>
-
-</div>
+  <div class="select">
+    <label for="genre">Seleziona un genere</label>
+    <select
+      name="genre"
+      id="genre"
+      :disabled="ableSelect"
+      :value="typeGenreFilms"
+      @input="$emit('input', $event.target.value)"
+      @change="$emit('selectGenreFilms')"
+    >
+      <option value="0" selected>All</option>
+      <option :value="genre.id" v-for="genre in genreList" :key="genre.id">
+        {{ genre.name }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>
@@ -24,10 +22,9 @@ import axios from "axios";
 
 export default {
   name: "SelectComponent",
-  props:{
-      typeGenreFilms:String ,
-      ableSelect:Boolean,
-      
+  props: {
+    typeGenreFilms: String,
+    ableSelect: Boolean,
   },
   data() {
     return {
@@ -59,5 +56,31 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+.select {
+  position: absolute;
+  right: 1rem;
+  top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+  color: red;
+  border-radius: 50rem;
+  padding: 1rem 1.5rem;
+  box-shadow: 0 0 4px red;
+  select {
+    background-color: lightgray;
+    color: red;
+    border-radius: 50rem;
+    padding-left: 0.25rem;
+    font-weight: 600;
+    option{
+      font-weight: 600;
+    }
+  }
+}
+:focus-visible {
+  outline: none;
+}
 </style>

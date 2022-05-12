@@ -1,4 +1,5 @@
 <template>
+<section class="serie">
   <div class="container-fluid" >
     <h2 class="text-white my-2">Serie</h2>
     <select
@@ -22,6 +23,7 @@
     </div>
     <div v-else class="no_response">Non abbiamo questo tipo di serie</div>
   </div>
+</section>
 </template>
 
 <script>
@@ -29,7 +31,7 @@ import CardSeries from "./CardSeriesComponent.vue";
 import state from "@/state";
 
 export default {
-  name: "ContainerSerieComponent",
+  name: "SectionSerieComponent",
   components: {
     CardSeries,
   },

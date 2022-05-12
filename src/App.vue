@@ -2,27 +2,26 @@
   <div id="app">
     <header>
       <Logo />
-      <div class="filter">
-        <Form
-          v-model.trim="searchText"
-          @searchFilm="newSearchFilm"
-          :searchText="searchText"
-        />
-        <Select
-          :ableSelect="ableSelect"
-          :typeGenreFilms="typeGenreFilms"
-          v-model="typeGenreFilms"
-          @selectGenreFilms="CastAndGenereList(films, series)"
-        />
-      </div>
+      <Nav />
+      <Form
+        v-model.trim="searchText"
+        @searchFilm="newSearchFilm"
+        :searchText="searchText"
+      />
     </header>
     <main v-if="loading">
-      <ContainerFilm
+      <Select
+        :ableSelect="ableSelect"
+        :typeGenreFilms="typeGenreFilms"
+        v-model="typeGenreFilms"
+        @selectGenreFilms="CastAndGenereList(films, series)"
+      />
+      <SectionFilm
         :numberPageFilm="numberPageFilm"
         v-model="numberPageFilm"
         @selectnumberPageFilm="selectPageFilm"
       />
-      <ContainerSerie
+      <SectionSerie
         :numberPageSerie="numberPageSerie"
         v-model="numberPageSerie"
         @selectnumberPageSerie="selectPageSerie"
@@ -33,10 +32,11 @@
 
 <script>
 import Logo from "./components/LogoComponent.vue";
+import Nav from "./components/NavComponent.vue";
 import Form from "./components/FormComponent.vue";
 import Select from "./components/SelectComponent.vue";
-import ContainerFilm from "./components/ContainerFilmComponent.vue";
-import ContainerSerie from "./components/ContainerSerieComponent.vue";
+import SectionFilm from "./components/SectionFilmComponent.vue";
+import SectionSerie from "./components/SectionSerieComponent.vue";
 import axios from "axios";
 import state from "@/state";
 
@@ -44,10 +44,11 @@ export default {
   name: "App",
   components: {
     Logo,
+    Nav,
     Form,
     Select,
-    ContainerFilm,
-    ContainerSerie,
+    SectionFilm,
+    SectionSerie,
   },
   data() {
     return {
@@ -59,7 +60,7 @@ export default {
       ableSelect: true,
       numberPageFilm: "1",
       numberPageSerie: "1",
-      loading:false
+      loading: false,
     };
   },
   methods: {
@@ -77,7 +78,7 @@ export default {
       this.searchFilm();
     },
     searchFilm() {
-      state.boolean=true
+      state.boolean = true;
       this.ableSelect = false;
       /* CHIAMATA FILM */
       const requestLinkFilms = axios.get(
@@ -96,7 +97,7 @@ export default {
         state.films_data = this.films_data;
         state.films = this.films;
         state.series = this.series;
-        this.loading=true
+        this.loading = true;
         /* PRONTA L'ARRAY FILM LA UTLIZZO PER FARE LE CHIAMATE PER I GENERI E IL CAST*/
         this.CastAndGenereList(state.films, state.series);
       });
@@ -172,7 +173,7 @@ export default {
 
 <style lang="scss">
 @import "@/assets/scss/style";
-#app{
+#app {
   background-color: gray;
   height: 100vh;
 }
@@ -182,17 +183,34 @@ header {
   align-items: center;
   background-color: rgb(26, 24, 24);
   padding: 1rem;
-  .filter {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    row-gap: 0.5rem;
-  }
+  box-shadow: 0 1px 4px red;
 }
 main {
+  position: relative;
   height: calc(100vh - 118px);
   padding: 3rem 1rem;
+  margin-top: 0.5rem;
+  margin-right: 0.25rem;
   background-color: gray;
   overflow-x: auto;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  margin-right: 0.5rem;
+}
+::-webkit-scrollbar:horizontal{
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: gray;
+} /* colore di sfondo delle scrollbar */
+
+::-webkit-scrollbar-thumb {
+  background-color: red;
+  border-radius: 50rem;
+}
+::-webkit-scrollbar-button {
+  display: none;
 }
 </style>
